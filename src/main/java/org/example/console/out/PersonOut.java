@@ -1,5 +1,8 @@
 package org.example.console.out;
 import org.example.dto.PersonDto;
+import org.example.repo.Impl.PersonRepoImpl;
+import org.example.repo.PersonRepo;
+
 import java.util.Map;
 
 public class PersonOut {

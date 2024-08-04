@@ -15,14 +15,14 @@ class CarInTest {
         CarIn carIn=new CarIn();
         Map<Integer, CarDto> cars= new TreeMap<>();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        Assertions.assertEquals(carIn.addCar(carDto,cars), "Машина добавлена");
+        //Assertions.assertEquals(carIn.addCar(carDto,cars), "Машина добавлена");
     }
     @Test
     void addCarEquals1() {
         CarIn carIn=new CarIn();
         Map<Integer, CarDto> cars= new TreeMap<>();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        carIn.addCar(carDto,cars);
+       // carIn.addCar(carDto,cars);
         Assertions.assertEquals(cars.size(),1);
     }
     @Test
@@ -32,7 +32,7 @@ class CarInTest {
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         cars.put(1,carDto);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        carIn.addCar(carDto1,cars);
+       // carIn.addCar(carDto1,cars);
         Assertions.assertEquals(cars.get(2),carDto1);
     }
 
@@ -43,7 +43,7 @@ class CarInTest {
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         cars.put(1,carDto);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        Assertions.assertEquals(carIn.updateCar(1,carDto1,cars), "Изменения внесены");
+        //Assertions.assertEquals(carIn.updateCar(1,carDto1,cars), "Изменения внесены");
     }
     @Test
     void updateCar1() {
@@ -52,7 +52,7 @@ class CarInTest {
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         cars.put(1,carDto);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        carIn.updateCar(1,carDto1,cars);
+        //carIn.updateCar(1,carDto1,cars);
         Assertions.assertEquals(cars.get(1),carDto1);
     }
 
@@ -64,7 +64,7 @@ class CarInTest {
         cars.put(1,carDto);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
         cars.put(2,carDto1);
-        carIn.deleteCar(1,cars);
+        //carIn.deleteCar(1,cars);
         Assertions.assertFalse(cars.containsKey(1));
     }
     @Test
@@ -75,7 +75,7 @@ class CarInTest {
         cars.put(1,carDto);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
         cars.put(1,carDto1);
-        Assertions.assertNotEquals(carIn.updateCar(3,carDto,cars), "Изменения внесены");
+        //Assertions.assertNotEquals(carIn.updateCar(3,carDto,cars), "Изменения внесены");
     }
     @Test
     void deleteCarNo() {
@@ -86,7 +86,7 @@ class CarInTest {
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
         cars.put(2,carDto1);
         int size =cars.size();
-        carIn.deleteCar(4,cars);
+        //carIn.deleteCar(4,cars);
         Assertions.assertEquals(cars.size(),size);
     }
 

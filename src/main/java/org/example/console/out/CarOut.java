@@ -1,9 +1,15 @@
 package org.example.console.out;
+import org.example.console.in.CarIn;
+import org.example.db.DataBase;
 import org.example.dto.CarDto;
+import org.example.repo.CarsRepo;
+import org.example.repo.Impl.CarsRepoImpl;
+
 import java.util.Map;
 import java.util.TreeMap;
 
 public class CarOut {
+    CarsRepo carsRepo=new CarsRepoImpl();
     public void getAllCars(Map<Integer,CarDto> cars) {
         for (Integer number: cars.keySet()){
             System.out.println("Номер в каталоге: "+number +" "+ cars.get(number));
@@ -16,11 +22,11 @@ public class CarOut {
         }
     }
 
-    public boolean getForNumber(int numberCar, Map<Integer, CarDto> cars) {
-        if(!cars.containsKey(numberCar)){
+    public boolean getForNumber(int numberCar, DataBase main) {
+        if(!main.getCars().containsKey(numberCar)){
             System.out.println("Машины с таким номером нет в каталоге");
             return false;
-        } else if(!cars.get(numberCar).getCarStatus().getStatus().equals("free")){
+        } else if(!carsRepo.addNumber(numberCar,main).get().getCarStatus().getStatus().equals("free")){
         System.out.println("Машина забронирована или продана");
         return false;}
         return true;

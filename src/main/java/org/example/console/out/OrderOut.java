@@ -3,6 +3,8 @@ import org.example.dto.CarDto;
 import org.example.dto.OrderDto;
 import org.example.dto.PersonDto;
 import org.example.dto.ServiceDto;
+import org.example.repo.Impl.OrdersRepoImpl;
+import org.example.repo.OrdersRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class OrderOut {
+    OrdersRepo ordersRepo=new OrdersRepoImpl();
 
     public List<OrderDto> getPersonOrders(PersonDto user, Map<Integer, OrderDto> orders) {
         List<OrderDto> result = new ArrayList<>();
