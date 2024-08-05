@@ -12,6 +12,9 @@ import org.example.dto.enums.CarStatus;
 
 import java.util.Scanner;
 
+/**
+ * creation of a new car
+ */
 public class NewAuto {
     public void newAuto(DataBase main, PersonDto user) {
         CarIn carIn = new CarIn();

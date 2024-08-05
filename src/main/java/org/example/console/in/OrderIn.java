@@ -18,6 +18,14 @@ import java.util.Map;
 public class OrderIn {
     OrdersRepo ordersRepo=new OrdersRepoImpl();
     ServiceRepo serviceRepo=new ServiceRepoImpl();
+
+    /**
+     * Order creation, car status check
+     * @param client object person-client
+     * @param carDto object car
+     * @param main Database object
+     * @return A line with the result of saving
+     */
     public String newOrder(PersonDto client, CarDto carDto, DataBase main){
         if (!carDto.getCarStatus().getStatus().equals("free")){
             return "Машина не продаётся";
@@ -37,15 +45,30 @@ public class OrderIn {
         carDto.setCarStatus(CarStatus.sold);
 return "Заказ создан";}
     }
-    public String updateOrder(Integer number , CarDto carDto, DataBase main) {
-        if (main.getOrdersMap().containsKey(number)){
+
+    /**
+     * Changes to a specific customer's order
+     * @param client object persob number
+     * @param number order number
+     * @param carDto object car
+     * @param main Database object
+     * @return  A line with the result of saving
+     */
+    public String updateOrder(PersonDto client,Integer number , CarDto carDto, DataBase main) {
+        if (main.getOrdersMap().containsKey(number)||main.getOrdersMap().get(number).getPerson().equals(client)){
         OrderDto orderDto = main.getOrdersMap().get(number);
         main.getOrdersMap().get(number).getCars().setCarStatus(CarStatus.free);
         orderDto.setCars(carDto);
        ordersRepo.update(orderDto,main);
-        return "Изменения внесены";}
+        return "Корректировки внесены";}
         return "";
     }
+    /**
+     * Deletes an order if the number exists
+     * @param number order
+     * @param main Object database
+     * @return  A line with the result
+     */
     public String deleteOrder(Integer number, DataBase main) {
         if (main.getOrdersMap().containsKey(number)){
             main.getOrdersMap().get(number).getCars().setCarStatus(CarStatus.free);
@@ -54,6 +77,12 @@ return "Заказ создан";}
         return "";
     }
 
+    /**
+     * Changes the order status to in process if the order status was previously not in process
+     * @param number order
+     * @param main Object database
+     * @return  A line with the result
+     */
     public String processOrder(int number, DataBase main) {
         String result= main.getOrdersMap().get(number).getOrderStatus().getStatus().equals("Processed")?"Заказ уже в работе"
                 :main.getOrdersMap().get(number).getOrderStatus().getStatus().equals("Closed")?"Заказ уже закрыт"
@@ -68,6 +97,12 @@ return "Заказ создан";}
         return result;
     }
 
+    /**
+     * Successful order closure (sale)
+     * @param number order
+     * @param main Object database
+     * @return  A line with the result
+     */
     public String closeOrder(int number, DataBase main) {
         String result= main.getOrdersMap().get(number).getOrderStatus().getStatus().equals("Closed")?"Заказ уже закрыт ранее"
                 :"Заказ закрыт";
@@ -79,7 +114,13 @@ return "Заказ создан";}
         }
         return result;
     }
-
+    /**
+     * Order creation, car status check
+     * @param client object person-client
+     * @param carDto object car
+     * @param main Database object
+     * @return A line with the result of saving
+     */
     public String newOrderService(CarDto carDto, String problem, DataBase main, PersonDto client) {
         ServiceDto service= new ServiceDto();
         carDto.setCondition(CarCondition.UsedCar);
@@ -98,7 +139,12 @@ return "Заказ создан";}
         System.out.println("Заказ создан");
         return "Заказ создан";
         }
-
+    /**
+     * Changes the order status to in process if the service order status was previously not in process
+     * @param number service order
+     * @param main Object database
+     * @return  A line with the result
+     */
     public String processOrderService(int number, DataBase main) {
         String result= main.getServiceMap().get(number).getOrderStatus().getStatus().equals("Processed")?"Заказ уже в работе"
                 :main.getServiceMap().get(number).getOrderStatus().getStatus().equals("Closed")?"Заказ уже закрыт"
@@ -112,7 +158,12 @@ return "Заказ создан";}
 
         return result;
     }
-
+    /**
+     * Successful service order closure (repair)
+     * @param number service order
+     * @param main Object database
+     * @return  A line with the result
+     */
     public String closeOrderService(int number,DataBase main) {
         String result= main.getServiceMap().get(number).getOrderStatus().getStatus().equals("Closed")?"Заказ уже закрыт ранее"
                 :"Заказ закрыт";
@@ -124,7 +175,12 @@ return "Заказ создан";}
         }
         return result;
     }
-
+    /**
+     * Deletes a service order if the number exists
+     * @param number service order
+     * @param main Object database
+     * @return  A line with the result
+     */
     public String deleteOrderService(int number, DataBase main) {
         if (main.getServiceMap().containsKey(number)){
             main.getServiceMap().get(number).getCars().setCarStatus(CarStatus.free);

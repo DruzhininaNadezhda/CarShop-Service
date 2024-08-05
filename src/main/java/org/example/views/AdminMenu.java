@@ -7,7 +7,15 @@ import org.example.dto.PersonDto;
 
 import java.util.Scanner;
 
+/**
+ * View for administrators
+ * Editing Personas
+ */
 public class AdminMenu {
+    /**
+     * @param main DataBase object
+     * @param user person - admin
+     */
     public void adminMenu(DataBase main, PersonDto user) {
         Scanner sc = new Scanner(System.in);
         PersonIn personIn = new PersonIn();
@@ -29,17 +37,17 @@ public class AdminMenu {
                     authorization.authorization(main);
                     break;
                 case 1:
-                    personOut.getAllClients(main.getPersonsMap());
+                    personOut.getAllClients(main);
                     break;
                 case 2:
-                    personOut.getAllEmployee(main.getPersonsMap());
+                    personOut.getAllEmployee(main);
                     break;
                 case 3:
                     System.out.println("Введите логин : ");
                     String login = sc.nextLine();
-                    if (personOut.getPersonForLogin(login, main.getPersonsMap())) {
-                        System.out.println("1. Изменить роль " + main.getPersonsMap().get(login));
-                        System.out.println("2. Изменить данные " + main.getPersonsMap().get(login));
+                    if (personOut.getPersonForLogin(login, main)) {
+                        System.out.println("1. Корректировать роль " + main.getPersonsMap().get(login));
+                        System.out.println("2. Корректировать данные " + main.getPersonsMap().get(login));
                         System.out.println("3. Удалить данные " + main.getPersonsMap().get(login));
                         choice = sc.nextInt();
                         while (choice != 1 && choice != 2 && choice != 3) {

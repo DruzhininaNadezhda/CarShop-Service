@@ -1,93 +1,107 @@
 package org.example.console.in;
+import org.example.db.DataBase;
 import org.example.dto.CarDto;
 import org.example.dto.enums.CarCondition;
 import org.example.dto.enums.CarStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.Map;
-import java.util.TreeMap;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class CarInTest {
     @Test
     void addCarEquals() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        //Assertions.assertEquals(carIn.addCar(carDto,cars), "Машина добавлена");
+        Assertions.assertEquals(carIn.addCar(carDto,main), "Машина добавлена");
     }
     @Test
     void addCarEquals1() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-       // carIn.addCar(carDto,cars);
-        Assertions.assertEquals(cars.size(),1);
+       carIn.addCar(carDto,main);
+        Assertions.assertEquals(main.getCars().size(),1);
     }
     @Test
     void addCarEquals2() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto);
+        carIn.addCar(carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-       // carIn.addCar(carDto1,cars);
-        Assertions.assertEquals(cars.get(2),carDto1);
+        carIn.addCar(carDto1,main);
+        Assertions.assertEquals(main.getCars().get(2),carDto1);
     }
 
     @Test
     void updateCar() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto);
+        carIn.addCar(carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        //Assertions.assertEquals(carIn.updateCar(1,carDto1,cars), "Изменения внесены");
+        Assertions.assertEquals(carIn.updateCar(1,carDto1,main), "Корректировки внесены");
     }
     @Test
     void updateCar1() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto);
+        carIn.addCar(carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        //carIn.updateCar(1,carDto1,cars);
-        Assertions.assertEquals(cars.get(1),carDto1);
+        carIn.updateCar(1,carDto1,main);
+        Assertions.assertEquals(main.getCars().get(1),carDto1);
     }
 
     @Test
     void deleteCar() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto);
+        carIn.addCar(carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(2,carDto1);
-        //carIn.deleteCar(1,cars);
-        Assertions.assertFalse(cars.containsKey(1));
+        carIn.addCar(carDto1,main);
+        carIn.deleteCar(1,main);
+        Assertions.assertFalse(main.getCars().containsKey(1));
     }
     @Test
-    void addCarNoUpdateCar() {
+    void updateCarNo() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto);
+        carIn.addCar(carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto1);
-        //Assertions.assertNotEquals(carIn.updateCar(3,carDto,cars), "Изменения внесены");
+        carIn.addCar(carDto1,main);
+        Assertions.assertNotEquals(carIn.updateCar(3,carDto,main), "Изменения внесены");
     }
     @Test
     void deleteCarNo() {
         CarIn carIn=new CarIn();
-        Map<Integer, CarDto> cars= new TreeMap<>();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(1,carDto);
+        carIn.addCar(carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        cars.put(2,carDto1);
-        int size =cars.size();
-        //carIn.deleteCar(4,cars);
-        Assertions.assertEquals(cars.size(),size);
+        carIn.addCar(carDto1,main);
+        int size =main.getCars().size();
+        carIn.deleteCar(4,main);
+        Assertions.assertEquals(main.getCars().size(),size);
+    }
+    @Test
+    void addCarEquals1No() {
+        CarIn carIn=new CarIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carIn.addCar(carDto,main);
+        Assertions.assertNotEquals(main.getCars().size(),0);
+    }
+    @Test
+    void addCarEquals2No() {
+        CarIn carIn=new CarIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carIn.addCar(carDto,main);
+        CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
+        carIn.addCar(carDto1,main);
+        Assertions.assertNotEquals(main.getCars().get(2),carDto);
     }
 
 }

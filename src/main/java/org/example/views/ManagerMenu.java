@@ -13,7 +13,10 @@ import org.example.dto.enums.CarCondition;
 import org.example.dto.enums.CarStatus;
 
 import java.util.Scanner;
-
+/**
+ * View for managers
+ * creating and changing machines and order status
+ */
 public class ManagerMenu {
     public void managerMenu(DataBase main, PersonDto user) {
         OrderOut orderOut = new OrderOut();
@@ -27,7 +30,7 @@ public class ManagerMenu {
             System.out.println("1. Список всех заказов");
             System.out.println("2. Список автомобилей");
             System.out.println("3. Добавить автомобиль");
-            System.out.println("4. Изменить данные о автомобиле");
+            System.out.println("4. Корректировка данных автомобиля");
             System.out.println("5. Удалить данные о автомобиле");
             System.out.println("6. Обработка заказов на покупку");
             System.out.println("7. Обработка заявок на сервис");
@@ -40,10 +43,10 @@ public class ManagerMenu {
             }
             switch (choice) {
                 case 1:
-                    orderOut.getAllOrders(main.getOrdersMap());
+                    orderOut.getAllOrders(main);
                     break;
                 case 2:
-                    carOut.getAllCars(main.getCars());
+                    carOut.getAllCars(main);
                     break;
                 case 8:
                     authorization.authorization(main);
@@ -80,7 +83,7 @@ public class ManagerMenu {
                         double price = sc.nextDouble();
                         CarDto carDto1 = new CarDto(brand, model, Integer.parseInt(year), price, CarCondition.getCondition(conditionCar), CarStatus.free);
                         carIn.updateCar(number, carDto1, main);
-                        System.out.println("Изменения внесены");
+                        System.out.println("Обновления внесены");
                     }
                     break;
                 case 5:
@@ -96,7 +99,7 @@ public class ManagerMenu {
                     System.out.print("Номер заказа :");
                     number = sc.nextInt();
                     sc.nextLine();
-                    if (orderOut.getForNumber(number, main.getOrdersMap())) {
+                    if (orderOut.getForNumber(number, main)) {
                         System.out.println("1. Принять в работу заказ " + number);
                         System.out.println("2. Закрыть заказ (успешная продажа) " + number);
                         System.out.println("3. Отменить заказ " + number);
@@ -113,11 +116,11 @@ public class ManagerMenu {
                     break;
                 case 7:
                     System.out.println("Заказы на сервис :");
-                    orderOut.getAllOrdersService(main.getServiceMap());
+                    orderOut.getAllOrdersService(main);
                     System.out.print("Номер заказа :");
                     number = sc.nextInt();
                     sc.nextLine();
-                    if (orderOut.getOrdersServiceOfNumber(main.getServiceMap(), number)) {
+                    if (orderOut.getOrdersServiceOfNumber(main, number)) {
                         System.out.println("1. Принять в работу заявку " + number);
                         System.out.println("2. Закрыть заявку (ремонт) " + number);
                         System.out.println("3. Отменить заказ " + number);

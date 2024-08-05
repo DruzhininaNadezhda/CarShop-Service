@@ -7,6 +7,9 @@ import org.example.dto.enums.RoleUser;
 
 import java.util.Scanner;
 
+/**
+ * registration of all users
+ */
 public class Registration {
     public void registration(DataBase main) {
         PersonIn personIn = new PersonIn();
@@ -14,7 +17,7 @@ public class Registration {
         Scanner sc = new Scanner(System.in);
         System.out.print("Фамилия : ");
         String surname = sc.nextLine();
-        System.out.print("Имя : ");
+        System.out.print("Name : ");
         String name = sc.nextLine();
         System.out.print("Логин : ");
         String login = sc.nextLine();
@@ -31,7 +34,7 @@ public class Registration {
         }
         String roleUser = role == 1 ? "Admin" : role == 2 ? "Manager" : "Client";
         PersonDto personDto = new PersonDto(surname, name, password, RoleUser.getRoleUser(roleUser), login);
-        System.out.println(personIn.add(personDto, main.getPersonsMap()));
+        System.out.println(personIn.add(personDto, main));
        authorization.authorization(main);
     }
 }

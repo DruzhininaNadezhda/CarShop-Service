@@ -9,6 +9,10 @@ import org.example.dto.PersonDto;
 
 import java.util.Scanner;
 
+/**
+ * View for administrators
+ * creating and changing an order
+ */
 public class ClientMenu {
     public void clientMenu(DataBase main, PersonDto user) {
         Scanner sc = new Scanner(System.in);
@@ -21,7 +25,7 @@ public class ClientMenu {
             System.out.println("2. Список автомобилей");
             System.out.println("3. Поиск по автомобилям");
             System.out.println("4. Новый заказ");
-            System.out.println("5. Изменить заказ");
+            System.out.println("5. Корректировать заказ");
             System.out.println("6. Удалить заказ");
             System.out.println("7. Обслуживание авто");
             System.out.println("8. Выход");
@@ -32,16 +36,16 @@ public class ClientMenu {
             }
             switch (choice) {
                 case 1:
-                    System.out.println(orderOut.getPersonOrders(user, main.getOrdersMap()));
+                    System.out.println(orderOut.getPersonOrders(user, main));
                     break;
                 case 2:
-                    carOut.getFreeCars(main.getCars());
+                    carOut.getFreeCars(main);
                     break;
                 case 3:
                     System.out.print("Что искать? ");
                     sc.nextInt();
                     String filter = sc.nextLine();
-                    carOut.filterCar(filter, main.getCars());
+                    carOut.filterCar(filter, main);
                     break;
                 case 8:
                     authorization.authorization(main);
@@ -56,19 +60,19 @@ public class ClientMenu {
                 case 5:
                     System.out.print("Номер заказа : ");
                     int numberOrder = sc.nextInt();
-                    if (orderOut.getForNumber(numberOrder, main.getOrdersMap(), user)) {
-                        System.out.print("\nИзменения в заказе " + main.getCars().get(numberOrder));
+                    if (orderOut.getForNumber(numberOrder, main, user)) {
+                        System.out.print("\nКорректировки в заказе " + main.getCars().get(numberOrder));
                         System.out.print("Номер машины из каталога : ");
                         numberCar = sc.nextInt();
                         if (carOut.getForNumber(numberCar, main)) {
-                            orderIn.updateOrder(numberOrder, main.getCars().get(numberCar), main);
+                            orderIn.updateOrder(user,numberOrder, main.getCars().get(numberCar), main);
                         }
                     }
                     break;
                 case 6:
                     System.out.print("Номер заказа : ");
                     numberOrder = sc.nextInt();
-                    if (orderOut.getForNumber(numberOrder, main.getOrdersMap(), user)) {
+                    if (orderOut.getForNumber(numberOrder, main, user)) {
                         orderIn.deleteOrder(numberOrder, main);
                         System.out.println("Заказ удален");
                     }

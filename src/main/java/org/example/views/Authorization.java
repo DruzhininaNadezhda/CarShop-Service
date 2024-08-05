@@ -6,7 +6,13 @@ import org.example.dto.PersonDto;
 
 import java.util.Scanner;
 
+/**
+ * Authorization for all users
+ */
 public class Authorization {
+    /**
+     * @param main DataBase object
+     */
     public void authorization(DataBase main) {
         Registration registration= new Registration();
         PersonIn personIn = new PersonIn();
