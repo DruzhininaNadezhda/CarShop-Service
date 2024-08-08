@@ -1,0 +1,10 @@
+org.example
+org.example.console.in
+org.example.console.out
+org.example.db
+org.example.dto
+org.example.dto.enums
+org.example.repo
+org.example.repo.Impl
+org.example.service
+org.example.views

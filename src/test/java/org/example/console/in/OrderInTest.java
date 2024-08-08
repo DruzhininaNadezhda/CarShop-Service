@@ -1,5 +1,6 @@
 package org.example.console.in;
 
+import org.example.db.DataBase;
 import org.example.dto.CarDto;
 import org.example.dto.OrderDto;
 import org.example.dto.PersonDto;
@@ -21,212 +22,329 @@ class OrderInTest {
 
     @Test
     void newOrderEquals() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
-        Assertions.assertEquals(orderIn.newOrder(personDto,carDto,ordersMap),"Заказ создан");
+        Assertions.assertEquals(orderIn.newOrder(personDto,carDto,main),"Заказ создан");
     }
     @Test
     void newOrderEquals1() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
-        orderIn.newOrder(personDto,carDto,ordersMap);
-        Assertions.assertEquals(ordersMap.size(),1);
+        orderIn.newOrder(personDto,carDto,main);
+        Assertions.assertEquals(main.getOrdersMap().size(),1);
     }
     @Test
     void newOrderEquals2() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
-        orderIn.newOrder(personDto,carDto,ordersMap);
+        orderIn.newOrder(personDto,carDto,main);
         CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
-        orderIn.newOrder(personDto,carDto1,ordersMap);
-        Assertions.assertEquals(ordersMap.get(2).getCars(),carDto1);
+        orderIn.newOrder(personDto,carDto1,main);
+        Assertions.assertEquals(main.getOrdersMap().get(2).getCars(),carDto1);
     }
 
     @Test
     void updateOrder() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto1.setNumber(2);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-       OrderDto orderDto=new OrderDto();
-       orderDto.setCars(carDto);
-       orderDto.setOrderNumber(1);
-       orderDto.setPerson(personDto);
-       orderDto.setOrderStatus(OrderStatus.NotProcessed);
-        ordersMap.put(1,orderDto);
-        OrderIn orderIn=new OrderIn();
-        orderIn.updateOrder(1,carDto1,ordersMap);
-        Assertions.assertEquals(ordersMap.get(1).getCars(),carDto1);
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.updateOrder(personDto,1,carDto1,main);
+        Assertions.assertEquals(main.getOrdersMap().get(1).getCars(),carDto1);
     }
 
     @Test
     void deleteOrder() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto1.setNumber(2);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderDto orderDto=new OrderDto();
-        orderDto.setCars(carDto);
-        orderDto.setOrderNumber(1);
-        orderDto.setPerson(personDto);
-        orderDto.setOrderStatus(OrderStatus.NotProcessed);
-        ordersMap.put(1,orderDto);
-        OrderIn orderIn=new OrderIn();
-        orderIn.deleteOrder(1,ordersMap);
-        Assertions.assertFalse(ordersMap.containsKey(1));
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.deleteOrder(1,main);
+        Assertions.assertFalse(main.getOrdersMap().containsKey(1));
     }
 
 
     @Test
     void processOrder() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto1.setNumber(2);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderDto orderDto=new OrderDto();
-        orderDto.setCars(carDto);
-        orderDto.setOrderNumber(1);
-        orderDto.setPerson(personDto);
-        orderDto.setOrderStatus(OrderStatus.NotProcessed);
-        ordersMap.put(1,orderDto);
-        OrderIn orderIn=new OrderIn();
-        Assertions.assertEquals(orderIn.processOrder(1, ordersMap),"Заказ принят в работу");
+        orderIn.newOrder(personDto,carDto,main);
+        Assertions.assertEquals(orderIn.processOrder(1, main),"Заказ принят в работу");
     }
     @Test
     void processOrder2() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto1.setNumber(2);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderDto orderDto=new OrderDto();
-        orderDto.setCars(carDto);
-        orderDto.setOrderNumber(1);
-        orderDto.setPerson(personDto);
-        orderDto.setOrderStatus(OrderStatus.Closed);
-        ordersMap.put(1,orderDto);
-        OrderIn orderIn=new OrderIn();
-        Assertions.assertEquals(orderIn.processOrder(1, ordersMap),"Заказ уже закрыт");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.closeOrder(1, main);
+        Assertions.assertEquals(orderIn.processOrder(1, main),"Заказ уже закрыт");
     }
 
     @Test
     void closeOrder() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto1.setNumber(2);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderDto orderDto=new OrderDto();
-        orderDto.setCars(carDto);
-        orderDto.setOrderNumber(1);
-        orderDto.setPerson(personDto);
-        orderDto.setOrderStatus(OrderStatus.Closed);
-        ordersMap.put(1,orderDto);
-        OrderIn orderIn=new OrderIn();
-        Assertions.assertEquals(orderIn.closeOrder(1, ordersMap),"Заказ уже закрыт ранее");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.closeOrder(1, main);
+       Assertions.assertEquals(orderIn.closeOrder(1, main),"Заказ уже закрыт ранее");
     }
     @Test
     void closeOrder1() {
-        Map<Integer, OrderDto> ordersMap=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto.setNumber(1);
         CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
         carDto1.setNumber(2);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderDto orderDto=new OrderDto();
-        orderDto.setCars(carDto);
-        orderDto.setOrderNumber(1);
-        orderDto.setPerson(personDto);
-        orderDto.setOrderStatus(OrderStatus.Processed);
-        ordersMap.put(1,orderDto);
-        OrderIn orderIn=new OrderIn();
-        orderIn.closeOrder(1, ordersMap);
-        Assertions.assertEquals(orderDto.getOrderStatus().getStatus(),"Closed");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.closeOrder(1, main);
+        Assertions.assertEquals(main.getOrdersMap().get(1).getOrderStatus().getStatus(),"Closed");
     }
     @Test
      void newOrderService() {
-        Map<Integer, ServiceDto> serviceDto=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
         String problem = "Что-то там";
-        Assertions.assertEquals(orderIn.newOrderService(carDto,problem,serviceDto,personDto), "Заказ создан");
+        Assertions.assertEquals(orderIn.newOrderService(carDto,problem,main,personDto), "Заказ создан");
     }
     @Test
     void newOrderService1() {
-        Map<Integer, ServiceDto> serviceDto=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
         String problem = "Что-то там";
-        orderIn.newOrderService(carDto,problem,serviceDto,personDto);
-        Assertions.assertEquals(serviceDto.size(),1);
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        Assertions.assertEquals(main.getServiceMap().size(),1);
     }
     @Test
     void processOrderService() {
-        Map<Integer, ServiceDto> service=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
         String problem = "Что-то там";
-        ServiceDto serviceDto = new ServiceDto();
-        serviceDto.setProblem(problem);
-        serviceDto.setOrderStatus(OrderStatus.NotProcessed);
-        serviceDto.setOrderNumber(1);
-        serviceDto.setCars(carDto);
-        serviceDto.setPerson(personDto);
-        service.put(1,serviceDto);
-        Assertions.assertEquals(orderIn.processOrderService(1, service),"Заказ принят в работу");
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        Assertions.assertEquals(orderIn.processOrderService(1, main),"Заказ принят в работу");
     }
     @Test
     void closeOrderService() {
-        Map<Integer, ServiceDto> service=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
         String problem = "Что-то там";
-        ServiceDto serviceDto = new ServiceDto();
-        serviceDto.setProblem(problem);
-        serviceDto.setOrderStatus(OrderStatus.NotProcessed);
-        serviceDto.setOrderNumber(1);
-        serviceDto.setCars(carDto);
-        serviceDto.setPerson(personDto);
-        service.put(1,serviceDto);
-        Assertions.assertEquals(orderIn.closeOrderService(1, service),"Заказ закрыт");
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        Assertions.assertEquals(orderIn.closeOrderService(1, main),"Заказ закрыт");
     }
     @Test
     void deleteOrderService() {
-        Map<Integer, ServiceDto> service=new TreeMap<>();;
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
         CarDto carDto=new CarDto("Audi","Q8",2005);
         PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
-        OrderIn orderIn=new OrderIn();
         String problem = "Что-то там";
-        ServiceDto serviceDto = new ServiceDto();
-        serviceDto.setProblem(problem);
-        serviceDto.setOrderStatus(OrderStatus.NotProcessed);
-        serviceDto.setOrderNumber(1);
-        serviceDto.setCars(carDto);
-        serviceDto.setPerson(personDto);
-        service.put(1,serviceDto);
-        orderIn.deleteOrderService(1,service);
-        Assertions.assertFalse(service.containsKey(1));
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        orderIn.deleteOrderService(1,main);
+        Assertions.assertFalse(main.getServiceMap().containsKey(1));
+    }
+    @Test
+    void newOrderEqualsNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.sold);
+        carDto.setNumber(1);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        Assertions.assertNotEquals(orderIn.newOrder(personDto,carDto,main),"Заказ создан");
+    }
+    @Test
+    void newOrderEquals1No() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        Assertions.assertNotEquals(main.getOrdersMap().size(),0);
+    }
+    @Test
+    void newOrderEquals2No() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        CarDto carDto1=new CarDto("Audi","Q7",2012, 155.0, CarCondition.NewCar, CarStatus.free);
+        orderIn.newOrder(personDto,carDto1,main);
+        Assertions.assertNotEquals(main.getOrdersMap().get(2).getCars(),carDto);
+    }
+
+    @Test
+    void updateOrderNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto1.setNumber(2);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.updateOrder(personDto,1,carDto1,main);
+        Assertions.assertNotEquals(main.getOrdersMap().get(1).getCars(),carDto);
+    }
+
+    @Test
+    void deleteOrderNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto1.setNumber(2);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.deleteOrder(1,main);
+        Assertions.assertFalse(main.getOrdersMap().containsKey(1));
+    }
+
+
+    @Test
+    void processOrderNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto1.setNumber(2);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.closeOrder(1,main);
+        Assertions.assertNotEquals(orderIn.processOrder(1, main),"Заказ принят в работу");
+    }
+    @Test
+    void processOrder2No() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto1.setNumber(2);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        Assertions.assertNotEquals(orderIn.processOrder(1, main),"Заказ уже закрыт");
+    }
+
+    @Test
+    void closeOrderNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto1.setNumber(2);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        Assertions.assertNotEquals(orderIn.closeOrder(1, main),"Заказ уже закрыт ранее");
+    }
+    @Test
+    void closeOrder1No() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto.setNumber(1);
+        CarDto carDto1=new CarDto("Audi","Q5",2005, 55.0, CarCondition.NewCar, CarStatus.free);
+        carDto1.setNumber(2);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        orderIn.newOrder(personDto,carDto,main);
+        orderIn.closeOrder(1, main);
+        Assertions.assertNotEquals(main.getOrdersMap().get(1).getOrderStatus().getStatus(),"NotProcessed");
+    }
+    @Test
+    void newOrderServiceNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        String problem = "Что-то там";
+        Assertions.assertNotEquals(orderIn.newOrderService(carDto,problem,main,personDto), "");
+    }
+    @Test
+    void newOrderService1No() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        String problem = "Что-то там";
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        Assertions.assertNotEquals(main.getServiceMap().size(),0);
+    }
+    @Test
+    void processOrderServiceNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        String problem = "Что-то там";
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        Assertions.assertNotEquals(orderIn.processOrderService(1, main),"");
+    }
+    @Test
+    void closeOrderServiceNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        String problem = "Что-то там";
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        orderIn.closeOrderService(1, main);
+        Assertions.assertNotEquals(orderIn.closeOrderService(1, main),"Заказ закрыт");
+    }
+    @Test
+    void deleteOrderServiceNo() {
+        OrderIn orderIn=new OrderIn();
+        DataBase main = new DataBase();
+        CarDto carDto=new CarDto("Audi","Q8",2005);
+        PersonDto personDto=new PersonDto("Ivanov","Neivan","222", RoleUser.Client,"navi");
+        String problem = "Что-то там";
+        orderIn.newOrderService(carDto,problem,main,personDto);
+        orderIn.deleteOrderService(3,main);
+        Assertions.assertTrue(main.getServiceMap().containsKey(1));
     }
 
 }
